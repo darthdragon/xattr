@@ -31,6 +31,7 @@ import sys
 import os
 import getopt
 import zlib
+import base64
 
 import xattr
 
@@ -197,6 +198,8 @@ def main():
                 except KeyError:
                     onError("%sNo such xattr: %s" % (file_prefix, attr_name))
                     continue
+                except UnicodeDecodeError:
+                    attr_value = base64.b64encode(attr_value).decode('utf-8')
 
                 if long_format:
                     try:
